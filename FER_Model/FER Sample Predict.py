@@ -27,7 +27,7 @@ MODEL_FILE = 'fer_' + MODEL_NAME
 MODEL_FILE_H5 = MODEL_FILE + '.h5'
 MODEL_FILE_JSON = MODEL_FILE + '.json'
 
-BASE_DIR = r'/Users/fazalmittu/Downloads/sample_predict' # change this to your personal directory
+BASE_DIR = r'/Users/fazalmittu/Downloads/sample_predict/FER_Model' # change this to your personal directory
 
 # creates user_test folder
 USER_TEST_PATH = os.path.join(BASE_DIR, 'user_test')
