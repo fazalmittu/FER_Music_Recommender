@@ -1,3 +1,4 @@
+from Music_Model.MusicPredict import recommend_song
 from flask import Flask, flash, redirect, render_template, url_for, request
 
 import numpy as np 
@@ -11,8 +12,11 @@ import cv2
 import urllib.request
 import os
 from werkzeug.utils import secure_filename
+import random
 
 from FER_Model.FERSamplePredict import runFER
+from Music_Model.MusicPredict import recommend_song
+# from Music_Model.helper_predict import *
 
 #USER NEEDS TO CHANGE THE DIRECTORY PATHS
  
@@ -34,8 +38,14 @@ def allowed_file(filename):
 def home():
     return render_template('index.html')
  
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_image():
+    playlist_link = request.form.get('playlist_link')
+    print(playlist_link)
+
+    if playlist_link == "":
+        playlist_link = "https://open.spotify.com/playlist/2GUaZbnvUYD6CatRYxjoPJ?si=97a0f23424eb468c"
+
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
@@ -45,14 +55,19 @@ def upload_image():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         #print('upload_image filename: ' + filename)
 
         FERresult = runFER(filename)
+        
+        song_id = "https://open.spotify.com/embed/track/" + random.choice(recommend_song(FERresult, playlist_link))
+        
+        #Takes about 35 seconds after user uploads image
 
         flash('Image successfully uploaded and displayed below')
         flash('The emotion detected: ' + FERresult)
-        return render_template('index.html', filename=filename)
+        # flash('Playlist Link: ', playlist_link)
+        return render_template('index.html', filename=filename, song_id=song_id)
     else:
         flash('Allowed image types are - png, jpg, jpeg')
         return redirect(request.url)

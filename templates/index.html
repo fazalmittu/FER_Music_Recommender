@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Python Flask Upload and display image</title>
+        <title>FER Music Recommender</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <style type="text/css">
+            hr.rounded {
+                border-top: 8px solid #bbb;
+                border-radius: 5px;
+            }
+            .button {
+                background-color: #35a844;
+                border-radius: 5px;
+                border: none;
+                color: white;
+                padding: 8px 16px;
+                text-align: center;
+                font-size: 14px;
+                /* margin: 4px 2px; */
+                opacity: 0.6;
+                transition: 0.3s;
+                display: inline-block;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .button:hover {opacity: 1}
+        </style>
     </head>
     <body>
-        <p><h1 align="center">Facial Recognition Music Recommender</h1></p>
+        <p><h1 align="center">Facial Expression Recognition Music Recommender</h1></p>
         <div class="container">
             <div class="row">
                 <h2>Select a file to upload</h2>
@@ -15,7 +37,13 @@
                     {% if messages %}
                         <ul>
                             {% for message in messages %}
-                                <li>{{ message }}</li>
+                                {% if message == messages[1] %}
+                                    <li style="font-size:17px; color:#000000; font-weight:bold;"> {{ message }} </li>
+                                {% else %}
+                                    <li style="font-size:17px;"> {{ message }} </li>
+                                    <!-- <iframe src="https://open.spotify.com/embed/track/2Gnsof1hvZzjE1xdLRpjtf" width="70%" height="350" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe> -->
+
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     {% endif %}
@@ -23,20 +51,48 @@
                 </p>
                 {% if filename %}
                     <div>
-                        <img src="{{ url_for('display_image', filename=filename) }}" width='700' height='auto'>
+                        {% if song_id %}
+                            <iframe src={{song_id}} width="51.3%" height="350" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        {% endif %}
+                        <img src="{{ url_for('display_image', filename=filename) }}" width='600' height='auto'>
+                        
+                        <!-- <hr class="rounded"> -->
                     </div>
+                    
                 {% endif %}
+
+                <br>
+                
                 <form method="post" action="/" enctype="multipart/form-data">
                     <dl>
                         <p>
                             <input type="file" name="file" class="form-control" autocomplete="off" required>
                         </p>
                     </dl>
+
+                    <p style="line-height:3.5em;"></p>
+                    
+                    <form action="{{ url_for("upload_image")}}" method="post">
+                        <label for="playlist">Playlist Link:</label>
+                            <input cols="25" type="text" id="playlist" name="playlist_link" placeholder="Paste Link Here">
+                    
+                    <p style="line-height:2.5em;"></p>
+
+                    <p> <em> Please allow up to 40 seconds for a song to be recommended </em> </p>
+                    <!-- </form> -->
+
+                    <!-- <label for="playlist">First Name:</label>
+                    <input type="text" id="playlist" name="playlist_link" placeholder="playlist"> -->
+                    
+                    <hr class="rounded">
+
                     <p>
                         <input type="submit" value="Submit" class="btn btn-info">
                     </p>
-                </form>
-                <a href="{{ url_for('home') }}"><button>REFRESH</button></a>
+                </form>   
+                <a href="{{ url_for('home') }}"><button class="button">Refresh</button></a>
+                <br>
+                <br>
             </div>
         </div>
         
