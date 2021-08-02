@@ -27,15 +27,15 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 #Current credentials to access spotify API
 #Enter cid and secret for spotipy API below
-cid = '2a558674801e46b78ab77eaadb6b6b42'
-secret = '0f6f356020614588a11e87e2e4953766'
+cid = 'ENTER_CREDENTIAL'
+secret = 'ENTER_SECRET_CREDENTIAL'
 
 # #Try to find way to get rid of credentials being publicly displayed [look up environment variables, write script to read it from input]
 
 # client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
-playlist_owner = 'fazal'
+playlist_owner = 'PLACEHOLDER_NAME'
 
 
 # import spotipy
